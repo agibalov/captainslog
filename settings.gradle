@@ -1,0 +1,5 @@
+rootProject.name = 'captainslog'
+include 'frontend'
+include 'backend'
+include 'app'
+
