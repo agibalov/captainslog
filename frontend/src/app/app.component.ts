@@ -1,44 +1,30 @@
-import {Component, Inject} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component} from '@angular/core';
 
 @Component({
     selector: 'app-root',
     template: `
         <div class="container">
-            <h1>Hello World</h1>
-            <button type="button" (click)="testHttp()" class="btn btn-primary">Test HTTP</button>
-            <pre>{{response|json}}</pre>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="/">Captainslog</a>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/" routerLinkActive="active" 
+                               [routerLinkActiveOptions]="{exact: true}">Page 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/page2" routerLinkActive="active" 
+                               [routerLinkActiveOptions]="{exact: true}">Page 2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>            
+            <router-outlet></router-outlet>
         </div>
     `,
     styles: []
 })
-export class AppComponent {
-    response: any;
-
-    constructor(
-        @Inject('API_ENDPOINT') private apiEndpoint: string,
-        private http: HttpClient) {}
-
-    testHttp() {
-        this.response = "loading";
-        /*this.http.get('/api/hello', { observe: 'response' }).subscribe(response => {
-            console.log(response);
-            this.response = response;
-        });*/
-
-        this.http.post(`${this.apiEndpoint}/logrecords`, {
-            text: 'hello there!'
-        }, {
-            observe: 'response',
-            responseType: 'text'
-        }).subscribe(response => {
-            console.log(response);
-            this.response = response;
-
-            const location = response.headers.get('location');
-            this.http.get(location, { observe: 'response' }).subscribe(response => {
-                console.log(response);
-            });
-        });
-    }
-}
+export class AppComponent {}
