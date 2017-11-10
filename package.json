@@ -1,0 +1,32 @@
+{
+  "name": "captainslog",
+  "version": "1.0.0",
+  "description": "`./gradlew clean app:run` to build everything and run locally. Available at `http://localhost:8080/`",
+  "main": "index.js",
+  "engines": {
+    "node": "8.6.0",
+    "npm": "5.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start ecosystem.yml",
+    "restart": "pm2 restart ecosystem.yml",
+    "restart:fe": "pm2 restart ecosystem.yml --only frontend",
+    "restart:be": "pm2 restart ecosystem.yml --only backend",
+    "stop": "pm2 stop ecosystem.yml",
+    "logs": "pm2 logs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loki2302/captainslog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loki2302/captainslog/issues"
+  },
+  "homepage": "https://github.com/loki2302/captainslog#readme",
+  "devDependencies": {
+    "pm2": "^2.7.2"
+  }
+}

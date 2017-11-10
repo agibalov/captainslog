@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -15,7 +15,9 @@ import {HttpClient} from "@angular/common/http";
 export class AppComponent {
     response: any;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        @Inject('API_ENDPOINT') private apiEndpoint: string,
+        private http: HttpClient) {}
 
     testHttp() {
         this.response = "loading";
@@ -24,7 +26,7 @@ export class AppComponent {
             this.response = response;
         });*/
 
-        this.http.post(`/api/logrecords`, {
+        this.http.post(`${this.apiEndpoint}/logrecords`, {
             text: 'hello there!'
         }, {
             observe: 'response',
