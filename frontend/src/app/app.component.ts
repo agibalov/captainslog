@@ -19,9 +19,24 @@ export class AppComponent {
 
     testHttp() {
         this.response = "loading";
-        this.http.get('/api/hello', { observe: 'response' }).subscribe(response => {
+        /*this.http.get('/api/hello', { observe: 'response' }).subscribe(response => {
             console.log(response);
             this.response = response;
+        });*/
+
+        this.http.post(`/api/logrecords`, {
+            text: 'hello there!'
+        }, {
+            observe: 'response',
+            responseType: 'text'
+        }).subscribe(response => {
+            console.log(response);
+            this.response = response;
+
+            const location = response.headers.get('location');
+            this.http.get(location, { observe: 'response' }).subscribe(response => {
+                console.log(response);
+            });
         });
     }
 }
