@@ -46,8 +46,11 @@ public class BackendConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("*");
+            public void addCorsMappings(CorsRegistry corsRegistry) {
+                corsRegistry
+                        .addMapping("/api/**")
+                        .allowedOrigins("*")
+                        .exposedHeaders("Location");
             }
         };
     }

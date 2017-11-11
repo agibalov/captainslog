@@ -1,5 +1,6 @@
-import {Component, Inject} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
+import {ApiClient} from "./api-client.service";
 
 @Component({
     template: `
@@ -13,29 +14,18 @@ export class Page1Component {
     response: any;
 
     constructor(
-        @Inject('API_ENDPOINT') private apiEndpoint: string,
-        private http: HttpClient) {}
+        private apiClient: ApiClient,
+        private router: Router)
+    {}
 
-    testHttp() {
+    async testHttp(): Promise<void> {
         this.response = "loading";
-        /*this.http.get('/api/hello', { observe: 'response' }).subscribe(response => {
-            console.log(response);
-            this.response = response;
-        });*/
 
-        this.http.post(`${this.apiEndpoint}/logrecords`, {
-            text: 'hello there!'
-        }, {
-            observe: 'response',
-            responseType: 'text'
-        }).subscribe(response => {
-            console.log(response);
-            this.response = response;
-
-            const location = response.headers.get('location');
-            this.http.get(location, { observe: 'response' }).subscribe(response => {
-                console.log(response);
-            });
+        const logRecord = await this.apiClient.createLogRecord({
+            text: 'hi there!'
         });
+
+        const id = logRecord.id;
+        this.router.navigate(['logrecords', id, 'view']);
     }
 }
