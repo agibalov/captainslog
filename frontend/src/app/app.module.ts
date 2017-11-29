@@ -9,7 +9,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {LogRecordViewComponent} from "./log-record-view.component";
 import {ApiClient} from "./api-client.service";
 import {LogRecordCreateComponent} from "./log-record-create.component";
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -22,7 +22,7 @@ import {FormsModule} from "@angular/forms";
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
-        FormsModule
+        ReactiveFormsModule
     ],
     providers: [
         { provide: 'API_ENDPOINT', useValue: environment.apiEndpoint },
