@@ -10,11 +10,7 @@ import {Component} from '@angular/core';
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" routerLink="/" routerLinkActive="active" 
-                               [routerLinkActiveOptions]="{exact: true}">Page 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/page2" routerLinkActive="active" 
-                               [routerLinkActiveOptions]="{exact: true}">Page 2</a>
+                               [routerLinkActiveOptions]="{exact: true}">Create</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>
