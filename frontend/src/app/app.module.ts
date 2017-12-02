@@ -10,12 +10,14 @@ import {LogRecordViewComponent} from "./log-record-view.component";
 import {ApiClient} from "./api-client.service";
 import {LogRecordCreateComponent} from "./log-record-create.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {LogRecordListViewComponent} from "./log-record-list-view.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         LogRecordCreateComponent,
         LogRecordViewComponent,
+        LogRecordListViewComponent,
         PageNotFoundComponent
     ],
     imports: [

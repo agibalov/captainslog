@@ -25,6 +25,14 @@ export class ApiClient {
         }
     }
 
+    async getLogRecords(): Promise<LogRecord[]> {
+        try {
+            return await this.http.get<LogRecord[]>(this.apiEndpoint + '/logrecords').toPromise<LogRecord[]>();
+        } catch(e) {
+            throw e;
+        }
+    }
+
     async getLogRecord(id: string): Promise<LogRecord> {
         try {
             return await this.http.get<LogRecord>(this.apiEndpoint + '/logrecords/' + id).toPromise<LogRecord>();

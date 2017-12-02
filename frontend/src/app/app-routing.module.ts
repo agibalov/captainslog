@@ -3,11 +3,16 @@ import {PageNotFoundComponent} from "./page-not-found.component";
 import {NgModule} from "@angular/core";
 import {LogRecordViewComponent} from "./log-record-view.component";
 import {LogRecordCreateComponent} from "./log-record-create.component";
+import {LogRecordListViewComponent} from "./log-record-list-view.component";
 
 const appRoutes: Routes = [
     {
         path: '',
         component: LogRecordCreateComponent
+    },
+    {
+        path: 'logrecords',
+        component: LogRecordListViewComponent
     },
     {
         path: 'logrecords/:id/view',

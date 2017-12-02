@@ -13,6 +13,10 @@ import {Component} from '@angular/core';
                                [routerLinkActiveOptions]="{exact: true}">Create</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" routerLink="/logrecords" routerLinkActive="active"
+                               [routerLinkActiveOptions]="{exact: true}">List</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>
                         </li>
                     </ul>
