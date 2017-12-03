@@ -17,8 +17,8 @@ import {LogRecordNotFoundApiError} from "./api-client.service";
                                [routerLinkActiveOptions]="{exact: true}">Create</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" [routerLink]="['/logrecords', 0, 3]" routerLinkActive="active"
-                               [routerLinkActiveOptions]="{exact: true}">List</a>
+                            <a class="nav-link" routerLink="/logrecords" [queryParams]="{ page: 0, size: 3}" 
+                               routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">List</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>

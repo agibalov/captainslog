@@ -55,8 +55,8 @@ export class LogRecordsPageResolver implements Resolve<Page<LogRecord>> {
     {}
 
     async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Page<LogRecord>> {
-        const page = +route.paramMap.get('page');
-        const size = +route.paramMap.get('size');
+        const page = +route.queryParamMap.get('page') || 0;
+        const size = +route.queryParamMap.get('size') || 3;
         return await this.longRunningOperationExecutor.execute(async () => {
             return await this.apiClient.getLogRecords(page, size);
         });
