@@ -12,7 +12,8 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} fr
                 created: {{ logRecord.createdAt }}<br>
                 updated: {{ logRecord.updatedAt }}<br>
                 text: {{ logRecord.text }}
-                <a [routerLink]="['/logrecords', logRecord.id, 'view']">View</a>
+                <a [routerLink]="['/logrecords', logRecord.id, 'view']" class="btn btn-sm btn-primary">View</a>
+                <button type="button" class="btn btn-sm btn-danger" (click)="deleteLogRecord(logRecord.id)">Delete</button>
             </li>
         </ul>
     `,
@@ -21,11 +22,22 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} fr
 export class LogRecordListViewComponent implements OnInit {
     logRecords: LogRecord[];
 
-    constructor(private route: ActivatedRoute) {}
+    constructor(
+        private route: ActivatedRoute,
+        private apiClient: ApiClient,
+        private longRunningOperationExecutor: LongRunningOperationExecutor)
+    {}
 
     async ngOnInit() {
         this.route.data.subscribe((data: { logRecords: LogRecord[] }) => {
             this.logRecords = data.logRecords;
+        });
+    }
+
+    async deleteLogRecord(logRecordId: string): Promise<void> {
+        await this.longRunningOperationExecutor.execute(async () => {
+            await this.apiClient.deleteLogRecord(logRecordId);
+            this.logRecords = await this.apiClient.getLogRecords();
         });
     }
 }

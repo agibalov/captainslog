@@ -49,6 +49,23 @@ export class ApiClient {
             }
         }
     }
+
+    async deleteLogRecord(id: string): Promise<void> {
+        try {
+            await this.http.delete(this.apiEndpoint + '/logrecords/' + id).toPromise();
+        } catch(e) {
+            if (e instanceof HttpErrorResponse) {
+                const her = <HttpErrorResponse>e;
+                if(e.status == 404) {
+                    throw new LogRecordNotFoundApiError();
+                }
+
+                throw new UnknownApiError();
+            } else {
+                throw e;
+            }
+        }
+    }
 }
 
 export class EditableLogRecordAttributes {

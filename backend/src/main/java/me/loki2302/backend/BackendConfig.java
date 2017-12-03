@@ -47,21 +47,17 @@ public class BackendConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry corsRegistry) {
                 corsRegistry
                         .addMapping("/api/**")
                         .allowedOrigins("*")
+                        .allowedMethods("GET", "PUT", "POST", "DELETE")
                         .exposedHeaders("Location");
             }
-        };
-    }
 
-    @Bean
-    public WebMvcConfigurer delayConfigurer() {
-        return new WebMvcConfigurerAdapter() {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new HandlerInterceptorAdapter() {
