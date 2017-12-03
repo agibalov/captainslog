@@ -23,6 +23,7 @@ import {LogRecordNotFoundApiError} from "./api-client.service";
                         <li class="nav-item">
                             <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>
                         </li>
+                        <button type="button" (click)="doThrow()">Throw exception</button>
                     </ul>
                 </div>
             </nav>
@@ -59,5 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.wipSubscription.unsubscribe();
+    }
+
+    doThrow(): void {
+        throw new Error('hey there');
     }
 }

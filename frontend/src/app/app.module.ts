@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {HttpClientModule} from "@angular/common/http";
 
 import {environment} from '../environments/environment';
@@ -12,6 +12,7 @@ import {LogRecordCreateComponent} from "./log-record-create.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LogRecordListViewComponent} from "./log-record-list-view.component";
 import {LongRunningOperationExecutor} from "./long-running-operation-executor.service";
+import {MyErrorHandler} from "./my-error-handler.service";
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import {LongRunningOperationExecutor} from "./long-running-operation-executor.se
     ],
     providers: [
         { provide: 'API_ENDPOINT', useValue: environment.apiEndpoint },
+        { provide: ErrorHandler, useClass: MyErrorHandler },
         ApiClient,
         LongRunningOperationExecutor
     ],
