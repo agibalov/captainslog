@@ -39,7 +39,10 @@ export class LogRecordListViewComponent implements OnInit {
     async deleteLogRecord(logRecordId: string): Promise<void> {
         await this.longRunningOperationExecutor.execute(async () => {
             await this.apiClient.deleteLogRecord(logRecordId);
-            this.logRecordsPage = await this.apiClient.getLogRecords(0, 5);
+
+            const page = this.logRecordsPage.page;
+            const size = this.logRecordsPage.size;
+            this.logRecordsPage = await this.apiClient.getLogRecords(page, size);
         });
     }
 }
@@ -52,8 +55,10 @@ export class LogRecordsPageResolver implements Resolve<Page<LogRecord>> {
     {}
 
     async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Page<LogRecord>> {
+        const page = +route.paramMap.get('page');
+        const size = +route.paramMap.get('size');
         return await this.longRunningOperationExecutor.execute(async () => {
-            return await this.apiClient.getLogRecords(0, 5);
+            return await this.apiClient.getLogRecords(page, size);
         });
     }
 }

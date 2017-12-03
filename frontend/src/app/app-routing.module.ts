@@ -11,7 +11,7 @@ const appRoutes: Routes = [
         component: LogRecordCreateComponent
     },
     {
-        path: 'logrecords',
+        path: 'logrecords/:page/:size',
         component: LogRecordListViewComponent,
         resolve: {
             logRecordsPage: LogRecordsPageResolver
