@@ -1,6 +1,7 @@
-import 'rxjs/add/operator/toPromise';
-import {Component, OnInit} from '@angular/core';
-import {ApiClient, LogRecord, LogRecordNotFoundApiError} from "./api-client.service";
+import {Component, Injectable, OnInit} from '@angular/core';
+import {ApiClient, LogRecord} from "./api-client.service";
+import {LongRunningOperationExecutor} from "./long-running-operation-executor.service";
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 
 @Component({
     template: `
@@ -19,13 +20,25 @@ import {ApiClient, LogRecord, LogRecordNotFoundApiError} from "./api-client.serv
 export class LogRecordListViewComponent implements OnInit {
     logRecords: LogRecord[];
 
-    constructor(private apiClient: ApiClient) {}
+    constructor(private route: ActivatedRoute) {}
 
-    async ngOnInit(): Promise<void> {
-        try {
-            this.logRecords = await this.apiClient.getLogRecords();
-        } catch(e) {
-            throw e;
-        }
+    async ngOnInit() {
+        this.route.data.subscribe((data: { logRecords: LogRecord[] }) => {
+            this.logRecords = data.logRecords;
+        });
+    }
+}
+
+@Injectable()
+export class LogRecordListResolver implements Resolve<LogRecord[]> {
+    constructor(
+        private apiClient: ApiClient,
+        private longRunningOperationExecutor: LongRunningOperationExecutor)
+    {}
+
+    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<LogRecord[]> {
+        return await this.longRunningOperationExecutor.execute(async () => {
+            return await this.apiClient.getLogRecords();
+        });
     }
 }

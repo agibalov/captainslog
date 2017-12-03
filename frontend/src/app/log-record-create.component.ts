@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {ApiClient} from "./api-client.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LongRunningOperationExecutor} from "./long-running-operation-executor.service";
 
 @Component({
     template: `
@@ -30,7 +31,8 @@ export class LogRecordCreateComponent {
     constructor(
         private apiClient: ApiClient,
         private router: Router,
-        private formBuilder: FormBuilder)
+        private formBuilder: FormBuilder,
+        private longRunningOperationExecutor: LongRunningOperationExecutor)
     {
         this.recordForm = formBuilder.group({
             text: ['', Validators.compose([
@@ -45,19 +47,21 @@ export class LogRecordCreateComponent {
     }
 
     async createLogRecord(): Promise<void> {
-        const text = this.text.value;
-        if(text == 'qwerty') {
-            this.text.setErrors({
-                backend: { message: '"qwerty" is not allowed' }
+        this.longRunningOperationExecutor.execute(async () => {
+            const text = this.text.value;
+            if(text == 'qwerty') {
+                this.text.setErrors({
+                    backend: { message: '"qwerty" is not allowed' }
+                });
+                return;
+            }
+
+            const logRecord = await this.apiClient.createLogRecord({
+                text: this.recordForm.get('text').value
             });
-            return;
-        }
 
-        const logRecord = await this.apiClient.createLogRecord({
-            text: this.recordForm.get('text').value
+            const id = logRecord.id;
+            this.router.navigate(['logrecords', id, 'view']);
         });
-
-        const id = logRecord.id;
-        this.router.navigate(['logrecords', id, 'view']);
     }
 }

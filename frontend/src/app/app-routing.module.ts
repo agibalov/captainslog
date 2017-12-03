@@ -1,9 +1,9 @@
 import {RouterModule, Routes} from "@angular/router";
 import {PageNotFoundComponent} from "./page-not-found.component";
 import {NgModule} from "@angular/core";
-import {LogRecordViewComponent} from "./log-record-view.component";
+import {LogRecordResolver, LogRecordViewComponent} from "./log-record-view.component";
 import {LogRecordCreateComponent} from "./log-record-create.component";
-import {LogRecordListViewComponent} from "./log-record-list-view.component";
+import {LogRecordListResolver, LogRecordListViewComponent} from "./log-record-list-view.component";
 
 const appRoutes: Routes = [
     {
@@ -12,11 +12,17 @@ const appRoutes: Routes = [
     },
     {
         path: 'logrecords',
-        component: LogRecordListViewComponent
+        component: LogRecordListViewComponent,
+        resolve: {
+            logRecords: LogRecordListResolver
+        }
     },
     {
         path: 'logrecords/:id/view',
-        component: LogRecordViewComponent
+        component: LogRecordViewComponent,
+        resolve: {
+            logRecord: LogRecordResolver
+        }
     },
     {
         path: '**',
@@ -30,6 +36,10 @@ const appRoutes: Routes = [
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        LogRecordListResolver,
+        LogRecordResolver
     ]
 })
 export class AppRoutingModule {}

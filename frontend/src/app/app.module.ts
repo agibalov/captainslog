@@ -11,6 +11,7 @@ import {ApiClient} from "./api-client.service";
 import {LogRecordCreateComponent} from "./log-record-create.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LogRecordListViewComponent} from "./log-record-list-view.component";
+import {LongRunningOperationExecutor} from "./long-running-operation-executor.service";
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import {LogRecordListViewComponent} from "./log-record-list-view.component";
     providers: [
         { provide: 'API_ENDPOINT', useValue: environment.apiEndpoint },
         ApiClient,
+        LongRunningOperationExecutor
     ],
     bootstrap: [AppComponent]
 })
