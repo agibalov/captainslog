@@ -3,7 +3,7 @@ import {PageNotFoundComponent} from "./page-not-found.component";
 import {NgModule} from "@angular/core";
 import {LogRecordResolver, LogRecordViewComponent} from "./log-record-view.component";
 import {LogRecordCreateComponent} from "./log-record-create.component";
-import {LogRecordListResolver, LogRecordListViewComponent} from "./log-record-list-view.component";
+import {LogRecordListViewComponent, LogRecordsPageResolver} from "./log-record-list-view.component";
 
 const appRoutes: Routes = [
     {
@@ -14,7 +14,7 @@ const appRoutes: Routes = [
         path: 'logrecords',
         component: LogRecordListViewComponent,
         resolve: {
-            logRecords: LogRecordListResolver
+            logRecordsPage: LogRecordsPageResolver
         }
     },
     {
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
         RouterModule
     ],
     providers: [
-        LogRecordListResolver,
+        LogRecordsPageResolver,
         LogRecordResolver
     ]
 })

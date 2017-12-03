@@ -1,7 +1,13 @@
 package me.loki2302.backend;
 
+import me.loki2302.backend.dto.EditableLogRecordAttributes;
+import me.loki2302.backend.dto.LogRecordDto;
+import me.loki2302.backend.dto.PageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +16,6 @@ import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodCall;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -28,13 +33,26 @@ public class LogRecordController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getLogRecords() {
-        Iterable<LogRecord> logRecordsIterable = logRecordRepository.findAll();
-        List<LogRecordDto> logRecordDtos = StreamSupport.stream(logRecordsIterable.spliterator(), false)
+    public ResponseEntity<?> getLogRecords(
+            @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "size", defaultValue = "5") Integer pageSize) {
+
+        PageRequest pageRequest = new PageRequest(pageNumber, pageSize, Sort.Direction.DESC, "createdAt");
+        Page<LogRecord> logRecordsPage = logRecordRepository.findAll(pageRequest);
+
+        List<LogRecordDto> logRecordDtos = logRecordsPage.getContent().stream()
                 .map(LogRecordController::logRecordToLogRecordDto)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(logRecordDtos);
+        PageDto<LogRecordDto> pageDto = PageDto.<LogRecordDto>builder()
+                .page(pageNumber)
+                .size(pageSize)
+                .totalPages(logRecordsPage.getTotalPages())
+                .totalItems(logRecordsPage.getTotalElements())
+                .items(logRecordDtos)
+                .build();
+
+        return ResponseEntity.ok(pageDto);
     }
 
     @PostMapping

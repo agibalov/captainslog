@@ -1,4 +1,4 @@
-package me.loki2302.backend;
+package me.loki2302.backend.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

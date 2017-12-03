@@ -1,13 +1,15 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {ApiClient, LogRecord} from "./api-client.service";
+import {ApiClient, LogRecord, Page} from "./api-client.service";
 import {LongRunningOperationExecutor} from "./long-running-operation-executor.service";
 import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 
 @Component({
     template: `
         <h1>Log record list view</h1>
-        <ul *ngIf="logRecords">
-            <li *ngFor="let logRecord of logRecords">
+        <p *ngIf="logRecordsPage">Page: {{ logRecordsPage.page }}, size: {{ logRecordsPage.size}},
+            total pages: {{ logRecordsPage.totalPages }}, total items: {{ logRecordsPage.totalItems }}</p>
+        <ul *ngIf="logRecordsPage">
+            <li *ngFor="let logRecord of logRecordsPage.items">
                 <span class="badge badge-primary">{{ logRecord.id }}</span><br>
                 created: {{ logRecord.createdAt }}<br>
                 updated: {{ logRecord.updatedAt }}<br>
@@ -20,7 +22,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} fr
     styles: []
 })
 export class LogRecordListViewComponent implements OnInit {
-    logRecords: LogRecord[];
+    logRecordsPage: Page<LogRecord>;
 
     constructor(
         private route: ActivatedRoute,
@@ -29,29 +31,29 @@ export class LogRecordListViewComponent implements OnInit {
     {}
 
     async ngOnInit() {
-        this.route.data.subscribe((data: { logRecords: LogRecord[] }) => {
-            this.logRecords = data.logRecords;
+        this.route.data.subscribe((data: { logRecordsPage: Page<LogRecord> }) => {
+            this.logRecordsPage = data.logRecordsPage;
         });
     }
 
     async deleteLogRecord(logRecordId: string): Promise<void> {
         await this.longRunningOperationExecutor.execute(async () => {
             await this.apiClient.deleteLogRecord(logRecordId);
-            this.logRecords = await this.apiClient.getLogRecords();
+            this.logRecordsPage = await this.apiClient.getLogRecords(0, 5);
         });
     }
 }
 
 @Injectable()
-export class LogRecordListResolver implements Resolve<LogRecord[]> {
+export class LogRecordsPageResolver implements Resolve<Page<LogRecord>> {
     constructor(
         private apiClient: ApiClient,
         private longRunningOperationExecutor: LongRunningOperationExecutor)
     {}
 
-    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<LogRecord[]> {
+    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Page<LogRecord>> {
         return await this.longRunningOperationExecutor.execute(async () => {
-            return await this.apiClient.getLogRecords();
+            return await this.apiClient.getLogRecords(0, 5);
         });
     }
 }

@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {Inject, Injectable} from "@angular/core";
 
 @Injectable()
@@ -25,9 +25,13 @@ export class ApiClient {
         }
     }
 
-    async getLogRecords(): Promise<LogRecord[]> {
+    async getLogRecords(page: number, size: number): Promise<Page<LogRecord>> {
         try {
-            return await this.http.get<LogRecord[]>(this.apiEndpoint + '/logrecords').toPromise<LogRecord[]>();
+            return await this.http.get<Page<LogRecord>>(this.apiEndpoint + '/logrecords', {
+                params: new HttpParams()
+                    .set('page', `${page}`)
+                    .set('size', `${size}`)
+            }).toPromise<Page<LogRecord>>();
         } catch(e) {
             throw e;
         }
@@ -39,7 +43,7 @@ export class ApiClient {
         } catch(e) {
             if (e instanceof HttpErrorResponse) {
                 const her = <HttpErrorResponse>e;
-                if(e.status == 404) {
+                if(her.status == 404) {
                     throw new LogRecordNotFoundApiError();
                 }
 
@@ -56,7 +60,7 @@ export class ApiClient {
         } catch(e) {
             if (e instanceof HttpErrorResponse) {
                 const her = <HttpErrorResponse>e;
-                if(e.status == 404) {
+                if(her.status == 404) {
                     throw new LogRecordNotFoundApiError();
                 }
 
@@ -76,6 +80,14 @@ export class LogRecord extends EditableLogRecordAttributes {
     id: string;
     createdAt: string;
     updatedAt: string;
+}
+
+export class Page<TItem> {
+    items: TItem[];
+    page: number;
+    size: number;
+    totalPages: number;
+    totalItems: number;
 }
 
 export abstract class ApiError extends Error {
