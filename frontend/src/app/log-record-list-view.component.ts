@@ -12,6 +12,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} fr
                 created: {{ logRecord.createdAt }}<br>
                 updated: {{ logRecord.updatedAt }}<br>
                 text: {{ logRecord.text }}
+                <a [routerLink]="['/logrecords', logRecord.id, 'view']">View</a>
             </li>
         </ul>
     `,

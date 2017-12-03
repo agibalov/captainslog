@@ -23,7 +23,7 @@ import {LogRecordNotFoundApiError} from "./api-client.service";
                         <li class="nav-item">
                             <a class="nav-link" routerLink="/someroutethatdoesnotexist">404</a>
                         </li>
-                        <button type="button" (click)="doThrow()">Throw exception</button>
+                        <button type="button" (click)="doThrow()" class="btn btn-outline-success">Throw exception</button>
                     </ul>
                 </div>
             </nav>

@@ -25,17 +25,6 @@ export class LogRecordViewComponent implements OnInit {
         this.route.data.subscribe((data: { logRecord: LogRecord }) => {
             this.logRecord = data.logRecord;
         });
-/*
-        const id = this.route.snapshot.paramMap.get('id');
-        try {
-            this.logRecord = await this.apiClient.getLogRecord(id);
-        } catch(e) {
-            if(e instanceof LogRecordNotFoundApiError) {
-                this.error = 'Not found';
-            } else {
-                throw e;
-            }
-        }*/
     }
 }
 
