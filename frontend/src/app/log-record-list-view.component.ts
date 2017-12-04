@@ -32,7 +32,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} fr
                     </ul>
                 </nav>
             </pagination>
-            <ul >
+            <ul>
                 <li *ngFor="let logRecord of logRecordsPage.items">
                     <span class="badge badge-primary">{{ logRecord.id }}</span><br>
                     created: {{ logRecord.createdAt }}<br>
