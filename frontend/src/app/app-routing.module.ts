@@ -13,6 +13,7 @@ const appRoutes: Routes = [
     {
         path: 'logrecords',
         component: LogRecordListViewComponent,
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         resolve: {
             logRecordsPage: LogRecordsPageResolver
         }
