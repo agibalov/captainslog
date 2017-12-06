@@ -24,7 +24,7 @@ task clean(type: Delete) {
     delete 'dist'
 }
 
-task npmBuild(type: NpmTask) {
+task npmBuild(type: NpmTask, dependsOn: 'npmInstall') {
     inputs.files fileTree('src')
     outputs.dir 'dist'
     args = ['run-script', 'build']
